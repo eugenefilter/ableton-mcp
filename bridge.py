@@ -94,4 +94,3 @@ if __name__ == '__main__':
     print(f"Starting bridge server on http://{BRIDGE_HOST}:{BRIDGE_PORT}")
     print(f"Forwarding commands to UDP {AGENT_HOST}:{AGENT_PORT}")
     app.run(host=BRIDGE_HOST, port=BRIDGE_PORT, debug=True)
-
