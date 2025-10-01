@@ -92,6 +92,12 @@ curl -X POST http://127.0.0.1:8787/cmd \
 # Автоматическая jungle обработка Amen Break
 python jungle_processor.py
 
+# Анализ доступных устройств на треке
+python device_analyzer.py
+
+# АВТОНАСТРОЙКА ЭФФЕКТОВ для jungle звука
+python jungle_auto_tuner.py
+
 # Изменение pitch клипа
 curl -X POST http://127.0.0.1:8787/cmd \
   -H "Content-Type: application/json" \
@@ -101,6 +107,16 @@ curl -X POST http://127.0.0.1:8787/cmd \
 curl -X POST http://127.0.0.1:8787/cmd \
   -H "Content-Type: application/json" \
   -d '{"action": "set_tempo", "args": {"bpm": 174}}'
+
+# Получение списка устройств на треке
+curl -X POST http://127.0.0.1:8787/cmd \
+  -H "Content-Type: application/json" \
+  -d '{"action": "get_track_devices", "args": {"track": "1 808"}}'
+
+# Настройка параметра устройства (например, EQ)
+curl -X POST http://127.0.0.1:8787/cmd \
+  -H "Content-Type: application/json" \
+  -d '{"action": "set_device_parameter", "args": {"track": "1 808", "device_index": 1, "param_index": 0, "value": 0.8}}'
 ```
 
 ## 🧪 Тестирование

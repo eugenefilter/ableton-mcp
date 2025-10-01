@@ -263,8 +263,10 @@ def main():
         print("\n🔥 Следующие шаги:")
         print("1. Настройте Drum Kit на треке для детальной обработки")
         print("2. Добавьте указанные эффекты вручную") 
-        print("3. Экспериментируйте с различными вариациями")
-        print("4. Добавьте bassline на отдельном треке")
+        print("3. Запустите jungle auto-tuner для автонастройки эффектов:")
+        print("   python jungle_auto_tuner.py")
+        print("4. Экспериментируйте с различными вариациями")
+        print("5. Добавьте bassline на отдельном треке")
         
     except Exception as e:
         print(f"❌ Ошибка в jungle processor: {e}")

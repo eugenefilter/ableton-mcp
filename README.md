@@ -177,30 +177,54 @@ python jungle_processor.py
 - **Effects chain** - рекомендации по обработке
 - **Jungle sound guide** - детальные настройки EQ, компрессора, реверба
 
+### 🔍 Device Analyzer (`device_analyzer.py`)
+
+Анализ доступных устройств и их параметров:
+
+- **Сканирование устройств** на треке
+- **Анализ параметров** каждого эффекта
+- **Рекомендации** по порядку устройств для jungle
+
+### 🎛️ Jungle Auto-Tuner (`jungle_auto_tuner.py`)
+
+Автоматическая настройка эффектов для jungle звука:
+
+- **EQ Eight** - high-pass, boost высоких, cut средних
+- **Compressor** - punch настройки (-18dB, 4:1, 1ms attack)
+- **Saturator** - analog warmth (5dB drive)
+- **Reverb** - атмосферные настройки (20% room, 1.5s decay)
+
 ### 🧪 API Tester (`test_api.py`)
 
 Комплексное тестирование всех функций:
 
 - Проверка связи с Ableton
 - Тестирование всех команд API
-- Автоматическая валидация ответов## 📁 Структура проекта
+- Автоматическая валидация ответов
 
-```
-├── MyAgent/              # Control Surface скрипт для Ableton
-│   └── __init__.py      # Основной код агента
-├── bridge.py            # HTTP-UDP мост
-├── setup.py             # Установщик скрипта в Ableton
-├── test_api.py          # Тестер API функций
-├── create_amen_break.py # Генератор Amen Break
-├── start.sh             # Автоматический запуск
-└── requirements.txt     # Python зависимости
+## 📁 Структура проекта```
+
+├── MyAgent/ # Control Surface скрипт для Ableton
+│ └── **init**.py # Основной код агента с device control API
+├── bridge.py # HTTP-UDP мост
+├── setup.py # Установщик скрипта в Ableton
+├── test_api.py # Тестер API функций
+├── create_amen_break.py # Генератор Amen Break паттерна
+├── jungle_processor.py # Jungle sound processor с pitch variations
+├── device_analyzer.py # Анализатор устройств и параметров
+├── jungle_auto_tuner.py # Автонастройка эффектов для jungle
+├── start.sh # Автоматический запуск
+└── requirements.txt # Python зависимости
+
 ```
 
 ## 🏗️ Архитектура
 
 ```
+
 Внешний мир → HTTP (8787) → bridge.py → UDP (8788) → MyAgent → Ableton Live
 Внешний мир ← HTTP (8787) ← bridge.py ← UDP (8789) ← MyAgent ← Ableton Live
+
 ```
 
 **Компоненты:**
@@ -223,8 +247,10 @@ python jungle_processor.py
 Скрипт устанавливается в системную папку Ableton:
 
 ```
+
 /Applications/Ableton Live 11 Suite.app/Contents/App-Resources/MIDI Remote Scripts/MyAgent/
-```
+
+````
 
 ### Особенности реализации
 
@@ -247,7 +273,7 @@ def create_drum_pattern(style="jungle", bpm=174):
     elif style == "trap":
         return create_trap_pattern()
     # ... другие стили
-```
+````
 
 ### Расширение функционала
 
