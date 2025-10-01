@@ -214,5 +214,133 @@ class MyAgent(ControlSurface):
             except Exception:
                 pass
 
+    def _action_get_track_devices(self, track):
+        """Получает список устройств на дорожке"""
+        target_track = self._find_track(track)
+        if target_track:
+            try:
+                devices_info = []
+                for i, device in enumerate(target_track.devices):
+                    device_info = {
+                        "index": i,
+                        "name": device.name,
+                        "class_name": device.class_name,
+                        "is_active": device.is_active
+                    }
+                    devices_info.append(device_info)
+                
+                log.info("MyAgent: Found %d devices on track '%s'", len(devices_info), track)
+                return devices_info
+            except Exception as e:
+                log.error("MyAgent: Error getting devices for track '%s': %s", track, e, exc_info=True)
+        return []
+
+    def _action_get_device_parameters(self, track, device_index):
+        """Получает параметры конкретного устройства"""
+        target_track = self._find_track(track)
+        if target_track and device_index < len(target_track.devices):
+            try:
+                device = target_track.devices[device_index]
+                params_info = []
+                
+                for i, param in enumerate(device.parameters):
+                    if param.is_enabled:
+                        param_info = {
+                            "index": i,
+                            "name": param.name,
+                            "value": param.value,
+                            "min": param.min,
+                            "max": param.max,
+                            "default_value": param.default_value
+                        }
+                        params_info.append(param_info)
+                
+                log.info("MyAgent: Found %d parameters for device '%s' on track '%s'", 
+                        len(params_info), device.name, track)
+                return {"device_name": device.name, "parameters": params_info}
+            except Exception as e:
+                log.error("MyAgent: Error getting device parameters: %s", e, exc_info=True)
+        return {}
+
+    def _action_set_device_parameter(self, track, device_index, param_index, value):
+        """Устанавливает значение параметра устройства"""
+        target_track = self._find_track(track)
+        if target_track and device_index < len(target_track.devices):
+            try:
+                device = target_track.devices[device_index]
+                if param_index < len(device.parameters):
+                    param = device.parameters[param_index]
+                    if param.is_enabled:
+                        self.song.begin_undo_step()
+                        # Нормализуем значение к диапазону параметра
+                        normalized_value = max(param.min, min(param.max, float(value)))
+                        param.value = normalized_value
+                        
+                        log.info("MyAgent: Set parameter '%s' of device '%s' to %f on track '%s'", 
+                                param.name, device.name, normalized_value, track)
+                        return True
+            except Exception as e:
+                log.error("MyAgent: Error setting device parameter: %s", e, exc_info=True)
+            finally:
+                try:
+                    self.song.end_undo_step()
+                except Exception:
+                    pass
+        return False
+
+    def _action_add_audio_effect(self, track, effect_name):
+        """Добавляет аудио эффект на дорожку"""
+        target_track = self._find_track(track)
+        if target_track:
+            try:
+                self.song.begin_undo_step()
+                # Добавляем эффект в конец цепи
+                device_index = len(target_track.devices)
+                
+                # Создаем эффект (это упрощенная версия - в реальности нужно использовать browser)
+                # Для полной реализации потребуется работа с Live.Browser
+                log.info("MyAgent: Attempting to add effect '%s' to track '%s'", effect_name, track)
+                
+                # Пока что это заглушка - полная реализация требует сложной работы с браузером
+                log.warning("MyAgent: add_audio_effect is a placeholder - full implementation requires browser API")
+                return False
+                
+            except Exception as e:
+                log.error("MyAgent: Error adding audio effect: %s", e, exc_info=True)
+                return False
+            finally:
+                try:
+                    self.song.end_undo_step()
+                except Exception:
+                    pass
+        return False
+
+    def _action_set_clip_pitch(self, track, slot, pitch_coarse=0, pitch_fine=0):
+        """Изменяет pitch MIDI клипа"""
+        target_track = self._find_track(track)
+        if target_track and target_track.clip_slots[slot].has_clip:
+            try:
+                self.song.begin_undo_step()
+                clip = target_track.clip_slots[slot].clip
+                
+                # Изменяем pitch через транспозицию клипа
+                if hasattr(clip, 'pitch_coarse'):
+                    clip.pitch_coarse = max(-48, min(48, int(pitch_coarse)))
+                    log.info("MyAgent: Set clip pitch coarse to %d in track '%s', slot %s", 
+                            pitch_coarse, track, slot)
+                
+                if hasattr(clip, 'pitch_fine'):
+                    clip.pitch_fine = max(-50, min(50, int(pitch_fine)))
+                    log.info("MyAgent: Set clip pitch fine to %d in track '%s', slot %s", 
+                            pitch_fine, track, slot)
+                    
+                return True
+            except Exception as e:
+                log.error("MyAgent: Error setting clip pitch: %s", e, exc_info=True)
+                return False
+            finally:
+                self.song.end_undo_step()
+        return False
+
 def create_instance(c_instance):
     return MyAgent(c_instance)

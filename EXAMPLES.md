@@ -86,6 +86,23 @@ curl -X POST http://127.0.0.1:8787/cmd \
   }'
 ```
 
+## 🌿 Jungle Sound Processing
+
+```bash
+# Автоматическая jungle обработка Amen Break
+python jungle_processor.py
+
+# Изменение pitch клипа
+curl -X POST http://127.0.0.1:8787/cmd \
+  -H "Content-Type: application/json" \
+  -d '{"action": "set_clip_pitch", "args": {"track": "1 808", "slot": 1, "pitch_coarse": 12}}'
+
+# Установка jungle темпа (174 BPM)
+curl -X POST http://127.0.0.1:8787/cmd \
+  -H "Content-Type: application/json" \
+  -d '{"action": "set_tempo", "args": {"bpm": 174}}'
+```
+
 ## 🧪 Тестирование
 
 ```bash

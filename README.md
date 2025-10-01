@@ -20,6 +20,9 @@ Link for API description: https://docs.cycling74.com/legacy/max8/vignettes/max_f
 - 📝 **Создание MIDI клипов** произвольной длительности
 - 🥁 **Программирование ударных паттернов**
 - 🎵 **Автоматическое создание Amen Break** (классический jungle/dnb паттерн)
+- 🌿 **Jungle Sound Processing** - автоматическая настройка jungle звука
+- 🎚️ **Pitch Variations** - создание вариаций с разным pitch'ем
+- 🎛️ **Device Control** - управление эффектами и их параметрами
 
 ### 🔗 **Интеграция**
 
@@ -115,6 +118,9 @@ curl -X POST http://127.0.0.1:8787/cmd \
 
 # 2. Использовать готовый скрипт
 python create_amen_break.py
+
+# 3. Применить jungle обработку
+python jungle_processor.py
 ```
 
 ## 🛠️ API Endpoints
@@ -148,8 +154,10 @@ python create_amen_break.py
 - `set_clip_notes` - программирование нот (`args.track`, `args.slot`, `args.notes`)
 - `add_notes` - добавление нот (`args.track`, `args.slot`, `args.notes`)
 - `launch_clip` - запуск клипа (`args.track`, `args.slot`)
-
-## 🎼 Готовые инструменты
+- `get_track_devices` - получение списка устройств трека (`args.track`)
+- `get_device_parameters` - получение параметров устройства (`args.track`, `args.device_index`)
+- `set_device_parameter` - изменение параметра устройства (`args.track`, `args.device_index`, `args.param_index`, `args.value`)
+- `set_clip_pitch` - изменение pitch клипа (`args.track`, `args.slot`, `args.pitch_coarse`, `args.pitch_fine`)## 🎼 Готовые инструменты
 
 ### 🥁 Amen Break Generator (`create_amen_break.py`)
 
@@ -160,15 +168,22 @@ python create_amen_break.py
 - **Kick, Snare, Hi-hat** с ghost notes
 - **Готов для jungle/drum'n'bass**
 
+### 🌿 Jungle Processor (`jungle_processor.py`)
+
+Автоматическая настройка jungle/dnb звука:
+
+- **174 BPM** - классический jungle темп
+- **Pitch variations** - 5 вариаций Amen Break
+- **Effects chain** - рекомендации по обработке
+- **Jungle sound guide** - детальные настройки EQ, компрессора, реверба
+
 ### 🧪 API Tester (`test_api.py`)
 
 Комплексное тестирование всех функций:
 
 - Проверка связи с Ableton
 - Тестирование всех команд API
-- Автоматическая валидация ответов
-
-## 📁 Структура проекта
+- Автоматическая валидация ответов## 📁 Структура проекта
 
 ```
 ├── MyAgent/              # Control Surface скрипт для Ableton

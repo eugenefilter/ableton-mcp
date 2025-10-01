@@ -2,6 +2,22 @@
 
 Все значимые изменения в проекте AI Agent for Ableton Live документируются в этом файле.
 
+## [2.1.0] - 2025-10-01
+
+### 🌿 Jungle Sound Processing
+
+- **Jungle Processor** (`jungle_processor.py`) - автоматическая настройка jungle/dnb звука
+- **Pitch Variations** - создание 5 вариаций Amen Break с разным pitch'ем
+- **174 BPM tempo** - автоматическая установка классического jungle темпа
+- **Effects Chain Guide** - детальные рекомендации по jungle обработке
+
+### 🎛️ Device Control API
+
+- `get_track_devices` - получение списка устройств на треке
+- `get_device_parameters` - получение параметров устройства
+- `set_device_parameter` - изменение параметров эффектов
+- `set_clip_pitch` - изменение pitch MIDI клипов
+
 ## [2.0.0] - 2025-10-01
 
 ### 🎉 Добавлено
